@@ -63,7 +63,7 @@ function toRoman(num) {
     return ans;
 }
 
-function printIntegerAndRoman(num,toRoman) {
+function printIntegerAndRoman(num,printIntegerAndRoman) {
     console.log(num + " : " + printIntegerAndRoman(num));
 }
 
