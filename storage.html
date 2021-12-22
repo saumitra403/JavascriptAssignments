@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        body {
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+        }
+        .container {
+            height: 30%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            align-items: center;
+            border: 2px solid black;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="localStorage">
+        <h1>Local Storage</h1>
+        <div>
+            <button id="localStorageButton">+</button>
+            <button id="deleteLS">X</button>
+        </div>
+        <div class="display" id="ls"></div>
+    </div>
+
+    <div class="container" id="sessionStorage">
+        <h1>Session Storage</h1>
+        <div>
+            <button id="sessionStorageButton">+</button>
+            <button id="deleteSS">X</button>
+        </div>
+        <div class="display" id="ss"></div>
+    </div>
+</body>
+<script src="StorageAssignment.js"></script>
+</html>
