@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="RestaurantApp.css">
+  <title>Document</title>
+</head>
+
+<body onload="getTables();">
+  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd; margin-bottom: 10px;">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Restaurant App</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Pricing</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+
+  <main>
+    <aside>
+      <div class="d-grid gap-2 col-6 mx-auto">
+        <button id="myModal" type="button" class="btn btn-primary btn-size" data-bs-toggle="modal"
+          href="#exampleModal">Create Table</button>
+      </div>
+      <div id="menu-container" class="d-flex flex-column no-gutters flex-wrap align-items-center">
+      </div>
+    </aside>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Create a Table</h5>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="recipient-name" class="col-form-label">Table Name :</label>
+                <input type="text" class="form-control" id="table-name">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button id="save" type="button" class="btn btn-primary">Save Changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="menu" class="border-start border-3 border-primary">
+      <div class="input-group ms-2">
+        <input type="search" class="form-control rounded " placeholder="Search" aria-label="Search"
+          aria-describedby="search-addon" style="margin-left: -7px;" />
+        <button type="button" class="btn btn-outline-primary">
+          search
+        </button>
+      </div>
+      <div class="d-flex flex-row no-gutters flex-wrap" id="card-container">
+        <div draggable="true" class="card mt-3 text-dark bg-warning mb-3 border-success food-card">
+          <img
+            src="https://thumbs.dreamstime.com/b/indian-delicious-cuisine-paneer-tikka-masala-tandoori-chapati-158846163.jpg"
+            class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">Shahi Paneer</h5>
+            <p class="card-text">250 Rupees</p>
+          </div>
+          <div class="card-footer text-muted">
+            <a href="#" class="btn btn-primary">+ Add To Menu</a>
+          </div>
+        </div>
+        <div draggable="true" class="card mt-3 text-dark bg-warning mb-3 border-success food-card">
+          <img src="https://thumbs.dreamstime.com/b/indian-dosa-special-food-made-rice-lentils-south-india-84751483.jpg"
+            class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">Plain Dosa</h5>
+            <p class="card-text">250 Rupees</p>
+          </div>
+          <div class="card-footer text-muted">
+            <a href="#" class="btn btn-primary">+ Add To Menu</a>
+          </div>
+        </div>
+        <div draggable="true" class="card mt-3 text-dark bg-warning mb-3 border-success food-card">
+          <img
+            src="https://media.istockphoto.com/photos/chole-bhature-spicy-chick-peas-curry-also-known-as-chole-or-channa-picture-id1292633282?k=20&m=1292633282&s=612x612&w=0&h=wY9MlMh_jD5_zpUKaRzRbl98gbRcZfq-PYDkbJ5Xx5E="
+            class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">Chole Bhature</h5>
+            <p class="card-text">200 Rupees</p>
+          </div>
+          <div class="card-footer text-muted">
+            <a href="#" class="btn btn-primary">+ Add To Menu</a>
+          </div>
+        </div>
+        <div draggable="true" class="card mt-3 text-dark bg-warning mb-3 border-success food-card">
+          <img
+            src="https://media.istockphoto.com/photos/indian-spicy-food-paav-bhaji-or-pav-bhaji-picture-id1155185428?k=20&m=1155185428&s=612x612&w=0&h=OhaOVUKroRKJbMbx4wPH2ysTb8vHx5p3plQOWnyagI0="
+            class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">Pav Bhaji</h5>
+            <p class="card-text">150 Rupees</p>
+          </div>
+          <div class="card-footer text-muted">
+            <a href="#" class="btn btn-primary">+ Add To Menu</a>
+          </div>
+        </div>
+        <div draggable="true" class="card mt-3 text-dark bg-warning mb-3 border-success food-card">
+          <img
+            src="https://images.pexels.com/photos/845811/pexels-photo-845811.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
+            class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">Pizza</h5>
+            <p class="card-text">180 Rupees</p>
+          </div>
+          <div class="card-footer text-muted">
+            <a href="#" class="btn btn-primary">+ Add To Menu</a>
+          </div>
+        </div>
+        <div draggable="true" class="card mt-3 text-dark bg-warning mb-3 border-success food-card">
+          <img
+            src="https://media.gettyimages.com/photos/asian-chicken-noodles-stir-fry-picture-id503155474?k=20&m=503155474&s=612x612&w=0&h=mFiAzmT1svVZnJSMWIU_3MY07j4A5FOLWVIvXfdiegM="
+            class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">Chowmein</h5>
+            <p class="card-text">250 Rupees</p>
+          </div>
+          <div class="card-footer text-muted">
+            <a href="#" class="btn btn-primary">+ Add To Menu</a>
+          </div>
+        </div>
+        <div draggable="true" class="card mt-3 text-dark bg-warning mb-3 border-success food-card">
+          <img
+            src="https://images.pexels.com/photos/3219547/pexels-photo-3219547.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
+            class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">Burger</h5>
+            <p class="card-text">150 Rupees</p>
+          </div>
+          <div class="card-footer text-muted">
+            <a href="#" class="btn btn-primary">+ Add To Menu</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+<script src="RestaurantApp.js"></script>
+
+</html>

@@ -1,0 +1,92 @@
+body {
+    text-align: center;
+}
+
+.navbar-collapse {
+    justify-content: flex-end;
+}
+
+main {
+    display: flex;
+    height: auto;
+    padding: 0px !important;
+}
+
+aside {
+    display: inline-block;
+    height: inherit;
+    width: 25%;
+}
+
+#menu {
+    width: 75%;
+    display: inline-block;
+    justify-content: space-evenly;
+}
+
+#card-container {
+    justify-content: space-evenly;
+}
+
+img {
+    height: 150px;
+}
+
+.card-img-top {
+    width: 100%;
+    height: 12vw;
+    object-fit: cover;
+}
+
+.input-group {
+    width: auto;
+}
+
+.btn-size {
+    padding: .5rem 1rem;
+    font-size: 1.25rem;
+    border-radius: .3rem;
+}
+
+#menu-container {
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    height: auto;
+}
+
+#menu-container>div {
+    width: 90% !important;
+}
+
+.food-card {
+    width: 18rem;
+}
+
+
+table {
+    width: 100%;
+}
+@media screen and (max-width: 576px){
+    .btn-size {
+        padding: .25rem .5rem;
+        font-size: .875rem;
+        border-radius: .2rem;
+    }
+
+    .card-img-top {
+        height: 30vw;
+    }
+
+    aside {
+        width: 30%;
+    }
+
+    #menu {
+        width: 70%;
+    }
+
+    .food-card {
+        width: 12rem;
+    }
+}
