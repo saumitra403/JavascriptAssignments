@@ -50,7 +50,7 @@ img {
 
 #menu-container {
     flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
     height: auto;
 }
@@ -61,8 +61,16 @@ img {
 
 .food-card {
     width: 18rem;
+    cursor: pointer;
 }
 
+.hide {
+    display: none;
+}
+
+.drag-over {
+    border: dashed 3px red;
+}
 
 table {
     width: 100%;
