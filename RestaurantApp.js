@@ -1,17 +1,25 @@
-$('#myModal').on('shown.bs.modal', function () {
-    $('#myInput').trigger('focus')
-});
+//to keep track of the prices associated with a food-card
+const foodPrices = {
+    "shahipaneer": 250,
+    "plaindosa": 250,
+    "cholebhature": 200,
+    "pavbhaji": 150,
+    "pizza": 180,
+    "chowmein": 250,
+    "burger": 150
+};
 
 document.querySelector('#inputfieldtable').addEventListener('input', filterTables);
 
+//used for the Search field to get tables matching user input
 function filterTables() {
     const searchInputtv = document.querySelector('#inputfieldtable');
     const filter = searchInputtv.value.toLowerCase();
     const tableList = document.querySelectorAll('#menu-container')[0].children;
     const list = Array.from(tableList);
-    console.log(list);
+    let arr = new Array(list.length);
     list.forEach((item) => {
-        let text = $(item).children('.card-body').text();
+        let text = $(item).find('.card-title').text();
         if (text.toLowerCase().includes(filter.toLowerCase())) {
             item.style.display = '';
         }
@@ -19,10 +27,12 @@ function filterTables() {
             item.style.display = 'none';
         }
     });
+
 }
 
 document.querySelector('#inputfield').addEventListener('input', filterList);
 
+//used for Search field to get food-cards matching user input
 function filterList() {
     const searchInputtv = document.querySelector('#inputfield');
     const filter = searchInputtv.value.toLowerCase();
@@ -43,6 +53,8 @@ function filterList() {
 var container = $('#menu-container');
 var tables;
 var Sno = 1;
+
+//this function will add dragEnter,dragLeave,dragOver and drop event listeners to every table added dynamically
 function initializeTables() {
     tables = document.querySelectorAll('.tables');
     tables.forEach(function (element) {
@@ -68,6 +80,7 @@ function initializeTables() {
         e.preventDefault();
         e.dataTransfer.dropEffect = 'copy';
         //console.log(e.offsetParent.id);
+        //fetching the card data
         let targetId = e.dataTransfer.getData('text/plain');
         let foodId = document.getElementById(targetId);
         let priceText = $(foodId).children('.card-body').children('.card-text').children('span').text();
@@ -80,12 +93,18 @@ function initializeTables() {
     }
 }
 
+function getPrices() {
+
+}
+
+//updates(increases) the price on screen when increase arrow is clicked
 function updatePrice(element, price) {
     let currentPrice = parseInt(element.text());
     currentPrice += price;
     element.text(currentPrice);
 }
 
+//decreases the price on screen when decrease arrow is clicked
 function decreasePrice(element, price) {
     let currentPrice = parseInt(element.text());
     if (currentPrice > price)
@@ -93,68 +112,65 @@ function decreasePrice(element, price) {
     element.text(currentPrice);
 }
 
-function changeCardPrice(arr, element, operation) {
-    if (operation == '1') {
-        let sum = parseInt(element.innerText);
-        for (let i = 0; i < arr.length; i++) {
-            sum += parseInt(arr[i].innerText);
-        }
-        element.innerText = sum;
+//updates the quantity column inside a row depending on operation
+//1 : Means element is increased
+//0 : Means element is decreased
+function updateQuantityColumn(element, operation) {
+    if (operation == 1) {
+        let temp2 = $(element).parent('td').parent('tr').children('.quantity');
+        let currentQuantitiy = parseInt($(temp2).text());
+        currentQuantitiy++;
+        temp2.text(currentQuantitiy);
     }
     else {
-        let sum = 0;
-        for (let i = 0; i < arr.length; i++) {
-            sum += parseInt(arr[i].innerText);
-        }
-        element.innerText = sum;
+        let temp2 = $(element).parent('td').parent('tr').children('.quantity');
+        let currentQuantitiy = parseInt($(temp2).text());
+        if (currentQuantitiy > 1)
+            currentQuantitiy--;
+        temp2.text(currentQuantitiy);
     }
 }
 
-//increase price on the table card
-function changeTableCard(prices, obj) {
-    let table = document.getElementById(obj.id);
-    var field = table.getElementsByTagName('span');
-    changeCardPrice(prices, field[0]);
+function getCardAndTbody(element) {
+    let tbody = $(element).closest('tbody')[0];
+    let arr = tbody.getElementsByClassName('price-data');
+    let span = document.getElementById($(element).closest('.modal').attr('id').replace('exampleModalLong', ''));
+    span = $(span).find('span')[0];
+    changeCardPrice(arr, span);
 }
+
+//Responsible for fetching the (td) element inside the row which contains the class price data and update the price
 function increment(element) {
-    let parentid = $(element).parent('td').parent('tr').parent('tbody').attr('id');
-    console.log(parentid);
-    //get the object from session storage
-    let obj = JSON.parse(sessionStorage.getItem(parentid));
-    let priceElement = $(element).parent('td').parent('tr').children('.price-data');
-    updatePrice(priceElement, parseInt(obj.price),'1');
-
-    let prices = document.getElementById(obj.element).getElementsByClassName('price-data');
-
-    changeTableCard(prices, obj);
-
     //to get the text inside quantity column
-    let temp2 = $(element).parent('td').parent('tr').children('.quantity');
-    let currentQuantitiy = parseInt($(temp2).text());
-    currentQuantitiy++;
-    temp2.text(currentQuantitiy);
+    updateQuantityColumn(element, 1);
+    let parentid = getParentId(element);
+    let priceElement = $(element).parent('td').parent('tr').children('.price-data');
+    //console.log(priceElement);
+    updatePrice(priceElement, foodPrices[parentid]);
+
+    getCardAndTbody(element);
+}
+
+
+function getParentId(element) {
+    let temp3 = element.parentElement;
+    let temp4 = temp3.parentElement;
+    let arr = temp4.childNodes;
+    let string = arr[1].innerText.toLowerCase().split(" ");
+    let parentid = string[0] + string[1];
+    return parentid;
 }
 
 function decrement(element) {
-    let parentid = $(element).parent('td').parent('tr').parent('tbody').attr('id');
-    console.log(parentid);
-    //get the object from session storage
-    let obj = JSON.parse(sessionStorage.getItem(parentid));
+    updateQuantityColumn(element, 0);
     let priceElement = $(element).parent('td').parent('tr').children('.price-data');
-    console.log(priceElement);
-    decreasePrice(priceElement, parseInt(obj.price));
-
-    let prices = document.getElementById(obj.element).getElementsByClassName('price-data');
-
-    changeTableCard(prices, obj,'0');
-
-    let temp2 = $(element).parent('td').parent('tr').children('.quantity');
-    let currentQuantitiy = parseInt($(temp2).text());
-    if (currentQuantitiy > 1)
-        currentQuantitiy--;
-    temp2.text(currentQuantitiy);
+    let parentid = getParentId(element);
+    decreasePrice(priceElement, foodPrices[parentid]);
+    getCardAndTbody(element);
 }
 
+//responsible for adding a row inside a table
+// element: it is the tbody element of the table the food card is dragged into
 function addRow(element, price, itemName, id) {
     $(element).attr("id", itemName + id);
     var html = "<tr>" +
@@ -165,6 +181,7 @@ function addRow(element, price, itemName, id) {
         "<td><i class='fas fa-arrow-up increase'></i><i class='fas fa-arrow-down decrease'></i></td>" +
         "</tr>";
     $(element).append(html);
+    //storing details to session storage which are fetched on page reload
     var foodobj = {
         element: itemName + id,
         price: price,
@@ -176,6 +193,8 @@ function addRow(element, price, itemName, id) {
     }
 }
 
+
+//responsible for adding dragstart event listeners to every food-card available
 function initializeFoodCards() {
     //attach dragStart event to food-card
 
@@ -192,8 +211,38 @@ function initializeFoodCards() {
         });
     });
 }
+
+//TODO
+//Change current price when element inside the table has been increased/decreased or a new element has been added to the table
+function changeCardPrice(arr, element) {
+    let sum = 0;
+    for (let i = 0; i < arr.length; i++) {
+        sum += parseInt(arr[i].innerText);
+    }
+    element.innerText = sum;
+}
+
+//generates an alert which tell you the bill from a specific table
+function generateBillAlert(arr) {
+    let sum = 0;
+    for (let i = 0; i < arr.length; i++) {
+        sum += parseInt($(arr[i]).children('.price-data').text());
+    }
+    window.alert('Price : ' + sum);
+}
+
+//generate bill on button click
+function generateBill(element) {
+    let tbody = $(element).parent('.modal-footer').prev().find('tbody')[0];
+    let arr = tbody.getElementsByTagName('tr');
+    generateBillAlert(arr);
+    //console.log(arr);
+}
+
 //display all elements on document.onload from local storage
-async function getTables() {
+
+//responsible for getting all the tables, initializeFoodCards
+function initialize() {
 
     for (let index = 0; index < localStorage.length; index++) {
         createTable(localStorage.key(index));
@@ -211,15 +260,22 @@ async function getTables() {
             decrement(this);
         });
     });
+    $('.btn-success').ready(function () {
+        $('.btn-success').click(function () {
+            generateBill(this);
+        })
+    });
+
+    getPrices();
 }
 
 //add all elements on document.onload from session storage
-//TODO
 
+//tbody element contains all the rows added to a specific table
 function fetchTbody(id) {
     let modalid = "exampleModalLong" + id;
     const element = document.getElementById(modalid);
-    const tableElement = $(element).children('.modal-dialog').children('.modal-content').children('.modal-body').children('.menu-table').children('tbody');
+    let tableElement = $(element).children('.modal-dialog').children('.modal-content').children('.modal-body').children('.menu-table').children('tbody');
     return tableElement;
 }
 function getRows() {
@@ -277,7 +333,6 @@ function createTable(id) {
         "</table>" +
         "</div>" +
         "<div class='modal-footer'>" +
-        "<button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>" +
         "<button type='button' class='btn btn-success'>Generate Bill</button>" +
         "</div>" +
         "</div>" +
@@ -290,6 +345,7 @@ function createTable(id) {
     }
 }
 
+//hides the modal after a table has been created
 $('#save').click(function () {
     let id = $('#table-name').val();
     //console.log(id);
