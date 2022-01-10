@@ -1,3 +1,5 @@
+$(document).ready(initialize);
+
 //to keep track of the prices associated with a food-card
 const foodPrices = {
     "shahipaneer": 250,
@@ -17,7 +19,6 @@ function filterTables() {
     const filter = searchInputtv.value.toLowerCase();
     const tableList = document.querySelectorAll('#menu-container')[0].children;
     const list = Array.from(tableList);
-    let arr = new Array(list.length);
     list.forEach((item) => {
         let text = $(item).find('.card-title').text();
         if (text.toLowerCase().includes(filter.toLowerCase())) {
@@ -91,10 +92,6 @@ function initializeTables() {
         addRow(tableElement, price, itemName, id);
         location.reload();
     }
-}
-
-function getPrices() {
-
 }
 
 //updates(increases) the price on screen when increase arrow is clicked
@@ -215,7 +212,7 @@ function initializeFoodCards() {
 //TODO
 //Change current price when element inside the table has been increased/decreased or a new element has been added to the table
 function changeCardPrice(arr, element) {
-    let sum = 0;
+    let sum = 0
     for (let i = 0; i < arr.length; i++) {
         sum += parseInt(arr[i].innerText);
     }
@@ -237,6 +234,20 @@ function generateBill(element) {
     let arr = tbody.getElementsByTagName('tr');
     generateBillAlert(arr);
     //console.log(arr);
+}
+
+function getPrices() {
+    for (let i = 0, len = localStorage.length; i < len; ++i ) {
+        let table = document.getElementById(localStorage.key( i ));
+        let span = $(table).find('span')[0];
+        let id = "exampleModalLong"+localStorage.key(i);
+        setTimeout(() => {
+            let modal = document.getElementById(id);
+            let tbody = $(modal).find('tbody')[0];
+            let arr =  tbody.getElementsByClassName('price-data');
+            changeCardPrice(arr,span);
+        },10)
+    }
 }
 
 //display all elements on document.onload from local storage
